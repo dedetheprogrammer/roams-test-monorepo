@@ -1,4 +1,5 @@
 import sys
+from .client_service import verify_dni
 
 def verify_tae(tae):
     """
@@ -95,6 +96,8 @@ def verify_mortgage(mortgage):
         {'years': 'Years cannot be negative'}
     """
     errors = {}
+    if "dni" in mortgage and (error := verify_dni(mortgage["dni"])):
+        errors["dni"] = error
 
     # Validar TAE si está presente en la hipoteca
     if "tae" in mortgage and (error := verify_tae(mortgage["tae"])):

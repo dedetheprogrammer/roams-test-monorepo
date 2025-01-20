@@ -1,3 +1,4 @@
+import json
 from config import db
 
 # -- MORTGAGE ------------------------------------------------------------
@@ -16,7 +17,7 @@ class Mortgage(db.Model):
             example: 3
         years:
             type: integer
-            description: Número de años de duración de la hipoteca.
+            description: Numero de años de duracion de la hipoteca.
             example: 20
         monthly_fee:
             type: integer
@@ -24,7 +25,7 @@ class Mortgage(db.Model):
             example: 500
         total_fee:
             type: integer
-            description: Cálculo del total a pagar durante la duración completa de la hipoteca.
+            description: Calculo del total a pagar durante la duracion completa de la hipoteca.
             example: 120000
     """
     dni = db.Column(db.String(9), db.ForeignKey('client.dni'), nullable=False)
@@ -38,7 +39,7 @@ class Mortgage(db.Model):
         Convierte la instancia de la hipoteca a un diccionario.
 
         Returns:
-            dict: Un diccionario con la información de la hipoteca.
+            dict: Un diccionario con la informacion de la hipoteca.
 
         Example:
             {
@@ -59,10 +60,10 @@ class Mortgage(db.Model):
 
     def __repr__(self):
         """
-        Representación en formato JSON del objeto Mortgage.
+        Representacion en formato JSON del objeto Mortgage.
 
         Returns:
-            str: Representación JSON del objeto.
+            str: Representacion JSON del objeto.
 
         Example:
             '{"dni": "12345678A", "tae": 3, "years": 20, "monthly_fee": 500, "total_fee": 120000}'

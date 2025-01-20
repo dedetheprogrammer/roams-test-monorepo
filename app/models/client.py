@@ -1,3 +1,4 @@
+import json
 from config import db
 
 # -- CLIENT --------------------------------------------------------------
@@ -16,7 +17,7 @@ class Client(db.Model):
             example: "Juan Perez"
         email:
             type: string
-            description: Correo electrónico del cliente.
+            description: Correo electronico del cliente.
             example: "juan.perez@example.com"
         capital:
             type: integer
@@ -47,11 +48,11 @@ class Client(db.Model):
         Convierte la instancia del cliente a un diccionario.
 
         Returns:
-            dict: Un diccionario con la información del cliente.
+            dict: Un diccionario con la informacion del cliente.
         Example:
             {
                 "dni": "12345678A",
-                "name": "Juan Pérez",
+                "name": "Juan Perez",
                 "email": "juan.perez@example.com",
                 "capital": 5000,
                 "mortgages": []
@@ -71,8 +72,8 @@ class Client(db.Model):
         Representacion en formato JSON del objeto Client.
 
         Returns:
-            str: Representación JSON del objeto.
+            str: Representacion JSON del objeto.
         Example:
-            '{"dni": "12345678A", "name": "Juan Pérez", "email": "juan.perez@example.com", "capital": 5000, "mortgages": [...]}'
+            '{"dni": "12345678A", "name": "Juan Perez", "email": "juan.perez@example.com", "capital": 5000, "mortgages": [...]}'
         """
         return json.dumps(self.get_dict())
