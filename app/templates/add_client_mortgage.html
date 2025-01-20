@@ -1,0 +1,68 @@
+<div>
+    <span id="add-mortgage-endpoint" style="display: none;">{{host}}{{endpoint}}</span>
+    <h2 style="margin: 0">Parameters</h2>
+    <form id="add-mortgage-form">
+        <input id="add-mortgage-dni-input" oninput="handleInputGetMortgage(event, 'dni')" type="text" placeholder="DNI" required>
+        <input id="add-mortgage-tae-input" oninput="handleInputGetMortgage(event, 'tae')" type="number" placeholder="TAE (%)" min="0" max="100" required>
+        <input id="add-mortgage-years-input" oninput="handleInputGetMortgage(event, 'years')" type="number" placeholder="Years" min="0" required>
+        <button id="add-mortgage-button" type="submit">Enviar</button> 
+    </form>
+    <h2>Request url/body</h2>
+    <input style="width:100%; margin: 5px 0px 5px 0px; font-family: monospace "id="add-mortgage-url" value="{{ host }}{{endpoint}}" readonly>
+    <textarea id="add-mortgage-request-area" readonly></textarea>
+    <h2 style="margin: 0">Response</h2>
+    <textarea id="add-mortgage-area" readonly></textarea>
+</div>
+
+<script>
+
+    function handleInputGetMortgage(event, field) {
+        if (field === "dni") {
+            document.getElementById('add-mortgage-url').value = document.getElementById('add-mortgage-endpoint').textContent.replace('<dni>', event.target.value) 
+        } else {
+            const requestArea = document.getElementById('add-mortgage-request-area');
+            client = JSON.parse(requestArea.value)
+            client[field] = event.target.value
+            requestArea.value = JSON.stringify(client, null, 2)
+        }
+    }
+
+    window.addEventListener("load", function() {
+        const requestArea = document.getElementById('add-mortgage-request-area');
+        requestArea.value = JSON.stringify({
+            "tae": "",
+            "years": ""
+        }, null, 2)
+        requestArea.style.height = 'auto'; // Restablecer la altura para calcular correctamente
+        requestArea.style.height = (requestArea.scrollHeight + 3) + 'px'; // Ajustar según el contenido
+    });
+
+    // Manejar el evento 'submit' del formulario
+    document.getElementById('add-mortgage-form').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Prevenir el comportamiento predeterminado si todo está validado
+
+        const dni = document.getElementById('add-mortgage-dni-input').value.trim();
+        const tae = document.getElementById('add-mortgage-tae-input').value.trim();
+        const years = document.getElementById('add-mortgage-years-input').value.trim();
+        const responseArea = document.getElementById('add-mortgage-area');
+
+        try {
+            // Realizar la petición POST con los datos
+            responseArea.value = ''; // Mostrar la respuesta en el textarea
+            const response = await fetch(`/api/client/${dni}/mortgage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ tae, years })
+            });
+            const data = await response.json(); // Parsear la respuesta JSON
+            responseArea.value = JSON.stringify(data, null, 2); // Mostrar la respuesta en el textarea
+            responseArea.style.height = 'auto'; // Restablecer la altura para calcular correctamente
+            responseArea.style.height = (responseArea.scrollHeight + 3) + 'px'; // Ajustar según el contenido
+        } catch (error) {
+            console.error(error)
+        }
+    });
+</script>
+

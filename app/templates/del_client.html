@@ -1,0 +1,43 @@
+<div>
+    <span id="del-endpoint" style="display: none;">{{host}}{{endpoint}}</span>
+    <h2 style="margin: 0">Parameters</h2>
+    <form id="del-form">
+        <input id="del-dni-input" oninput="handleInputDel(event)" type="text" placeholder="DNI" required>
+        <button id="del-button" type="submit">Enviar</button> 
+    </form>
+    <h2>Request url</h2>
+    <input style="width:100%; margin: 5px 0px 15px 0px; font-family: monospace "id="del-url" value="{{ host }}{{endpoint}}" readonly>
+    <h2 style="margin: 0">Response</h2>
+    <textarea id="del-area" readonly></textarea>
+</div>
+
+<script>
+
+    function handleInputDel(event) {
+        document.getElementById('del-url').value = document.getElementById('del-endpoint').textContent.replace('<dni>', event.target.value)
+    }
+
+    // Manejar el evento 'submit' del formulario
+    document.getElementById('del-form').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Prevenir el comportamiento predeterminado si todo está validado
+        const dni = document.getElementById('del-dni-input').value.trim();
+        const responseArea = document.getElementById('del-area'); // Área de texto para la respuesta
+        try {
+            responseArea.value = ''; // Mostrar la respuesta en el textarea
+            // Realizar la petición DELETE con los datos
+            const response = await fetch(`/api/client/${dni}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            const data = await response.json(); // Parsear la respuesta JSON
+            responseArea.value = JSON.stringify(data, null, 2); // Mostrar la respuesta en el textarea
+            responseArea.style.height = 'auto'; // Restablecer la altura para calcular correctamente
+            responseArea.style.height = (responseArea.scrollHeight + 3) + 'px'; // Ajustar según el contenido
+        } catch (error) {
+            console.error(error)
+        }
+    });
+</script>
+

@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+:root {
+    --margins: 100px;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    font-family: "Nunito Sans", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "wdth" 100, "YTLC" 500;
+}
+
+h2 {
+    margin: 0;
+}
+
+input {
+    height: 40px;
+    border-radius: 10px;
+    padding: 5px 0px 5px 20px;
+    /* border-color: rgb(83, 83, 83); */
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+}
+
+button {
+    height: 32px;
+    border-radius: 10px;
+    margin: 0;
+    border-color: rgb(83, 83, 83);
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    font-family: "Nunito Sans", serif;
+    font-size: 16px;
+    font-weight: 500;
+}
+button:hover {
+    background-color: rgb(240, 255, 230);
+}
+
+form {
+    margin: 5px 0px 15px 0px;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+form input {
+    width: 100%;
+}
+
+textarea {
+    width: 100%;
+    height: fit-content;
+    margin: 5px 0px 10px 0px;
+    padding: 20px;
+    resize: none;
+    border-radius: 10px;
+    box-sizing: border-box; /* Asegura que padding y border no afecten el ancho total */
+
+}
+
+
+.title {
+    margin: calc(var(--margins) / 2) var(--margins) 25px var(--margins);
+}
+
+.endpoints {
+    width: calc(100% - var(--margins) * 2);
+    margin: 0px var(--margins) var(--margins) var(--margins);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.endpoint {
+    width: 100%;
+    border-radius: 5px;
+}
+.endpoint-header {
+    width: calc(100% - 10px * 2);
+    height: fit-content;
+    padding: 10px;
+
+    color: white;
+}
+.endpoint-body {
+    width: calc(100% - 10px * 2);
+    padding: 10px;
+    height: fit-content;
+}
+
+.endpoint-get {
+    background-color: rgb(201, 231, 245);
+    border: 2px rgb(80, 177, 223) solid;
+    box-sizing: border-box; 
+}
+.endpoint-get .endpoint-header {
+    background-color: rgb(80, 177, 223); 
+}
+
+.endpoint-post {
+    background-color: rgb(253, 236, 200);
+    border: 2px rgb(230, 171, 44) solid;
+    box-sizing: border-box; 
+}
+.endpoint-post .endpoint-header {
+    background-color: rgb(230, 171, 44); 
+}
+
+.endpoint-patch {
+    background-color: rgb(234, 223, 255);
+    border: 2px rgb(122, 70, 218) solid;
+    box-sizing: border-box; 
+}
+.endpoint-patch .endpoint-header {
+    background-color: rgb(122, 70, 218); 
+}
+
+.endpoint-delete {
+    background-color: rgb(255, 216, 205);
+    border: 2px rgb(207, 77, 41) solid;
+    box-sizing: border-box; 
+}
+.endpoint-delete .endpoint-header {
+    background-color: rgb(207, 77, 41); 
+}

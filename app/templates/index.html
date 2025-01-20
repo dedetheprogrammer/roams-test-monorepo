@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Roams API endpoints explorer</title>
+</head>
+<body>
+    <div class="title">
+        <h1>Defined Endpoints</h1>
+    </div>
+    <div class="endpoints">
+        {% for rule in rules %}
+            <div
+                class="endpoint 
+                    {% if rule['method'] == 'GET' %}
+                        endpoint-get
+                    {% elif rule['method'] == 'POST' %}
+                        endpoint-post
+                    {% elif rule['method'] == 'PUT' or rule['method'] == 'PATCH' %}
+                        endpoint-patch
+                    {% elif rule['method'] == 'DELETE' %}
+                        endpoint-delete
+                    {% else %}
+                        endpoint-other
+                    {% endif %}"
+            >
+                <div class="endpoint-header">
+                    <span>{{ host }}</span>
+                    <span>{{ rule["method"] }} - <strong>{{ rule["name"] }}</strong></span>
+                </div>
+                <div class="endpoint-body">
+                    {{ rule["html"]|safe }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

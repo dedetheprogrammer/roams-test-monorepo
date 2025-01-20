@@ -1,0 +1,54 @@
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+</head>
+
+<div>
+    <span id="get-endpoint" style="display: none;">{{host}}{{endpoint}}</span>
+    <h2>Parameters</h2>
+    <form id="get-form">
+        <input id="get-dni-input" oninput="handleInputGet(event)" type="text" placeholder="DNI" required>
+        <button id="get-button">Enviar</button> 
+    </form>
+    <h2>Request url</h2>
+    <input style="width:100%; margin: 5px 0px 15px 0px; font-family: monospace "id="get-url" value="{{ host }}{{endpoint}}" readonly>
+    <h2>Response</h2>
+    <textarea id="get-area" readonly></textarea>
+</div>
+
+<script>
+    // Función para ajustar la altura del textarea
+    function autoResizeTextarea(textarea) {
+        textarea.style.height = 'auto'; // Restablecer la altura para calcular correctamente
+        textarea.style.height = (textarea.scrollHeight + 3) + 'px'; // Ajustar según el contenido
+    }
+
+    function handleInputGet(event) {
+        document.getElementById('get-url').value = document.getElementById('get-endpoint').textContent.replace('<dni>', event.target.value)
+    }
+
+    // Función que maneja el clic en el botón
+    document.getElementById('get-form').addEventListener('submit', async (event) => {
+        event.preventDefault()
+        const dni = document.getElementById('get-dni-input').value; // Obtener el valor del input
+        const responseArea = document.getElementById('get-area'); // Área de texto para la respuesta
+
+        try {
+            // Realizar la petición POST
+            responseArea.value = ''; // Mostrar la respuesta en el textarea
+            const response = await fetch(`/api/client/${dni}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            const data = await response.json(); // Parsear la respuesta JSON
+            responseArea.value = JSON.stringify(data, null, 2)
+            responseArea.style.height = 'auto'; // Restablecer la altura para calcular correctamente
+            responseArea.style.height = (responseArea.scrollHeight + 3) + 'px'; // Ajustar según el contenido
+        } catch (error) {
+            console.error(error)
+        }
+    });
+</script>
+

@@ -1,0 +1,37 @@
+<div>
+    <h2>Parameters</h2>
+    <form id="get-all-form">
+        <input disabled>
+        <button id="get-all-button">Enviar</button> 
+    </form>
+    <h2>Request url</h2>
+    <input style="width:100%; margin: 5px 0px 15px 0px; font-family: monospace "id="get-all-input" value="{{ host }}{{endpoint}}" readonly>
+    <h2>Response</h2>
+    <textarea id="get-all-area" readonly></textarea>
+</div>
+
+<script>
+    // Función para ajustar la altura del textarea
+    function autoResizeTextarea(textarea) {
+        textarea.style.height = 'auto'; // Restablecer la altura para calcular correctamente
+        textarea.style.height = (textarea.scrollHeight + 3) + 'px'; // Ajustar según el contenido
+    }
+
+    // Función que maneja el clic en el botón
+    document.getElementById('get-all-button').addEventListener('click', async (event) => {
+        event.preventDefault()
+        const responseArea = document.getElementById('get-all-area'); // Área de texto para la respuesta
+        // Realizar la petición GET
+        responseArea.value = ''; // Mostrar la respuesta en el textarea
+        const response = await fetch(`/api/client`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const data = await response.json(); // Parsear la respuesta JSON
+        responseArea.value = JSON.stringify(data, null, 2)
+        autoResizeTextarea(responseArea);
+    });
+</script>
+

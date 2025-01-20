@@ -1,0 +1,84 @@
+<div>
+    <span id="upd-endpoint" style="display: none;">{{host}}{{endpoint}}</span>
+    <h2 style="margin: 0">Request form</h2>
+    <form id="upd-form">
+        <input id="upd-dni-input" oninput="handleInputUpd(event, 'dni')" type="text" placeholder="DNI" required>
+        <input id="upd-name-input" oninput="handleInputUpd(event, 'name')" type="text" placeholder="Name">
+        <input id="upd-email-input" oninput="handleInputUpd(event, 'email')" type="text" placeholder="Email">
+        <input id="upd-capital-input" oninput="handleInputUpd(event, 'capital')" type="text" placeholder="Required capital">
+        <button id="upd-button" type="submit">Enviar</button> 
+    </form>
+    <h2>Request url/body</h2>
+    <input style="width:100%; margin: 5px 0px 5px 0px; font-family: monospace "id="upd-url" value="{{ host }}{{endpoint}}" readonly>
+    <textarea id="upd-request-area" readonly></textarea>
+    <h2 style="margin: 0">Response</h2>
+    <textarea id="upd-area" readonly></textarea>
+</div>
+
+<script>
+
+    function handleInputUpd(event, field) {
+        if (field === "dni") {
+            document.getElementById('upd-url').value = document.getElementById('upd-endpoint').textContent.replace('<dni>', event.target.value) 
+        } else {
+            const requestArea = document.getElementById('upd-request-area');
+            client = JSON.parse(requestArea.value)
+            client[field] = event.target.value
+            requestArea.value = JSON.stringify(client, null, 2)
+        }
+    }
+
+    window.addEventListener("load", function() {
+        const requestArea = document.getElementById('upd-request-area');
+        requestArea.value = JSON.stringify({
+            "name": "",
+            "email": "",
+            "capital": ""
+        }, null, 2)
+        requestArea.style.height = 'auto'; // Restablecer la altura para calcular correctamente
+        requestArea.style.height = (requestArea.scrollHeight + 3) + 'px'; // Ajustar según el contenido
+    });
+
+    // Manejar el evento 'submit' del formulario
+    document.getElementById('upd-form').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Prevenir el comportamiento predeterminado si todo está validado
+
+        const dni = document.getElementById('upd-dni-input').value.trim();
+        const name = document.getElementById('upd-name-input').value.trim();
+        const email = document.getElementById('upd-email-input').value.trim();
+        const capital = document.getElementById('upd-capital-input').value.trim();
+        const responseArea = document.getElementById('upd-area');
+        let changes = {}
+        if (name) {
+            changes["name"] = name
+        }
+        if (email) {
+            changes["email"] = email
+        }
+        if (capital) {
+            changes["capital"] = capital
+        }
+        if (Object.keys(changes).length === 0) {
+            return
+        }
+
+        try {
+            // Realizar la petición PATCH con los datos
+            responseArea.value = ''; // Mostrar la respuesta en el textarea
+            const response = await fetch(`/api/client/${dni}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(changes)
+            });
+            const data = await response.json(); // Parsear la respuesta JSON
+            responseArea.value = JSON.stringify(data, null, 2); // Mostrar la respuesta en el textarea
+            responseArea.style.height = 'auto'; // Restablecer la altura para calcular correctamente
+            responseArea.style.height = (responseArea.scrollHeight + 3) + 'px'; // Ajustar según el contenido
+        } catch (error) {
+            console.error(error)
+        }
+    });
+</script>
+

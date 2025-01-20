@@ -1,0 +1,68 @@
+<div>
+    <h2>Parameters</h2>
+    <form id="add-form">
+        <input id="add-dni-input" oninput="handleInputAdd(event, 'dni')" type="text" placeholder="DNI" required>
+        <input id="add-name-input" oninput="handleInputAdd(event, 'name')" type="text" placeholder="Name" required>
+        <input id="add-email-input" oninput="handleInputAdd(event, 'email')" type="text" placeholder="Email" required>
+        <input id="add-capital-input" oninput="handleInputAdd(event, 'capital')" type="text" placeholder="Required capital" required>
+        <button id="add-button" type="submit">Enviar</button> 
+    </form>
+    <h2>Request body</h2>
+    <textarea id="add-request-area" readonly></textarea>
+    <h2 style="margin: 0">Response</h2>
+    <textarea id="add-area" readonly></textarea>
+</div>
+
+<script>
+
+    function handleInputAdd(event, field) {
+        console.log(field)
+        const requestArea = document.getElementById('add-request-area');
+        client = JSON.parse(requestArea.value)
+        client[field] = event.target.value
+        requestArea.value = JSON.stringify(client, null, 2)
+    }
+
+    window.addEventListener("load", function() {
+        const requestArea = document.getElementById('add-request-area');
+        requestArea.value = JSON.stringify({
+            "dni": "",
+            "name": "",
+            "email": "",
+            "capital": ""
+        }, null, 2)
+        requestArea.style.height = 'auto'; // Restablecer la altura para calcular correctamente
+        requestArea.style.height = (requestArea.scrollHeight + 3) + 'px'; // Ajustar según el contenido
+    });
+
+
+    // Manejar el evento 'submit' del formulario
+    document.getElementById('add-form').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Prevenir el comportamiento predeterminado si todo está validado
+
+        const dni = document.getElementById('add-dni-input').value.trim();
+        const name = document.getElementById('add-name-input').value.trim();
+        const email = document.getElementById('add-email-input').value.trim();
+        const capital = document.getElementById('add-capital-input').value.trim();
+        const responseArea = document.getElementById('add-area');
+
+        try {
+            responseArea.value = ''; // Mostrar la respuesta en el textarea
+            // Realizar la petición POST con los datos
+            const response = await fetch('/api/client', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ dni, name, email, capital })
+            });
+            const data = await response.json(); // Parsear la respuesta JSON
+            responseArea.value = JSON.stringify(data, null, 2); // Mostrar la respuesta en el textarea
+            responseArea.style.height = 'auto'; // Restablecer la altura para calcular correctamente
+            responseArea.style.height = (responseArea.scrollHeight + 3) + 'px'; // Ajustar según el contenido
+        } catch (error) {
+            console.error(error)
+        }
+    });
+</script>
+
