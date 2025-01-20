@@ -1,5 +1,7 @@
 # Roams Backend API Test
-A continuación se describe los pasos a seguir para la utilización de la API implementada, esta puede ser accedida desde el navegador, ya que se ha implementado una interfaz para poder probarse. La versión de Python utilizada es la `v3.12.6`.
+A continuación se describe los pasos a seguir para la utilización de la API implementada, esta puede ser accedida desde el navegador, ya que se ha implementado una interfaz para poder probarse.
+
+La versión de Python utilizada es la `v3.12.6` y ha sido desarrollado en Windows.
 
 Para la ejecución de la API, seguir los siguientes pasos:
 
@@ -21,7 +23,7 @@ Para la ejecución de la API, seguir los siguientes pasos:
 
 3. Ejecutar alguno de los scripts. **Cualquiera de las tres formas es válida** y solo se requiere de una:
 
-    - Si se tiene Linux o se pueden ejecutar `Shell scripts` en Windows:
+    - Si se pueden ejecutar `Shell scripts` en Windows:
 
         ```sh
         chmod 0700 run.sh # Unicamente en Linux, no es necesario en Windows.
