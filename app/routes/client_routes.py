@@ -303,6 +303,7 @@ def add_client_mortgage(dni):
     
     Codigos de retorno:
     - 200: Si la hipoteca se ha agregado exitosamente.
+    - 400. Si los datos no son validos.
     - 404: Si no se encuentra un cliente con el DNI proporcionado.
     - 500: Error interno del servidor.
     """
