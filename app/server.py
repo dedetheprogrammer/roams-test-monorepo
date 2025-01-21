@@ -1,11 +1,14 @@
+import os
 from config import db, Config
 from flask import Flask, render_template
 from routes import client_bp, mortgage_bp
 from waitress import serve
 
+# Se verifica desde que direccion IP y puerto de inicio del servidor
+HOST = os.getenv("HOST", "127.0.0.1")
+PORT = os.getenv("PORT", "8080")
+
 # Se crea una instancia de la aplicación Flask
-HOST = '127.0.0.1'
-PORT = 8080
 app = Flask(__name__)
 
 # Se carga la configuración de la aplicación desde un objeto de configuración
